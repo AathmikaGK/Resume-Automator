@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CareerFlow AI</title>
+    <meta
+      name="description"
+      content="CareerFlow AI helps students tailor resumes, generate cover letters, create networking messages, and track job applications."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="container nav-inner">
+        <a href="#" class="brand">CareerFlow <span>AI</span></a>
+        <nav class="top-nav">
+          <a href="#landing" data-view-link="landing">Home</a>
+          <a href="#dashboard" data-view-link="dashboard">Dashboard</a>
+          <a href="#new-application" data-view-link="new-application">New Application</a>
+          <a href="#tracker" data-view-link="tracker">Tracker</a>
+          <a href="#documents" data-view-link="documents">Documents</a>
+          <a href="#settings" data-view-link="settings">Settings</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="app-shell container">
+      <section id="landing" class="view active">
+        <section class="hero card">
+          <div>
+            <p class="eyebrow">Smart career productivity for students</p>
+            <h1>Apply Smarter, Not Harder</h1>
+            <p>
+              Tailor your resume, generate cover letters, craft networking outreach, and track every
+              application in one workspace.
+            </p>
+            <div class="hero-actions">
+              <button class="btn primary" data-view="new-application">Start Applying</button>
+              <button class="btn ghost" data-view="dashboard">See How It Works</button>
+            </div>
+          </div>
+          <div class="hero-metrics">
+            <div><strong>62%</strong><span>Avg ATS Match</span></div>
+            <div><strong>18</strong><span>Applications Tracked</span></div>
+            <div><strong>4</strong><span>Interviews This Month</span></div>
+          </div>
+        </section>
+
+        <section class="grid-3 mt-2" id="features"></section>
+
+        <section class="card mt-2 how-it-works">
+          <h2>How it works</h2>
+          <ol>
+            <li>Paste a job description</li>
+            <li>Tailor your resume with ATS insights</li>
+            <li>Generate a role-specific cover letter</li>
+            <li>Create networking and follow-up messages</li>
+            <li>Track status, reminders, and outcomes</li>
+          </ol>
+        </section>
+      </section>
+
+      <section id="dashboard" class="view">
+        <div class="view-head">
+          <h2>Dashboard</h2>
+          <div class="inline-actions">
+            <button class="btn primary" data-view="new-application">New Application</button>
+            <button class="btn" data-view="resume-tailoring">Tailor Resume</button>
+            <button class="btn" data-view="cover-letter">Generate Cover Letter</button>
+            <button class="btn" data-view="networking">Write Networking Message</button>
+          </div>
+        </div>
+
+        <section class="grid-6" id="stats-grid"></section>
+
+        <section class="card mt-2">
+          <h3>Applications by Status</h3>
+          <div id="status-bars" class="status-bars"></div>
+        </section>
+
+        <section class="card mt-2">
+          <h3>Recent Applications</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Company</th>
+                <th>Role</th>
+                <th>Date Applied</th>
+                <th>Status</th>
+                <th>Match Score</th>
+                <th>Next Action</th>
+              </tr>
+            </thead>
+            <tbody id="recent-apps"></tbody>
+          </table>
+        </section>
+      </section>
+
+      <section id="new-application" class="view">
+        <div class="view-head">
+          <h2>New Application</h2>
+          <span id="step-label">Step 1 of 5</span>
+        </div>
+        <div class="stepper" id="stepper"></div>
+
+        <form id="application-form" class="card mt-2">
+          <div class="step" data-step="1">
+            <h3>Job Information</h3>
+            <div class="form-grid">
+              <label>Company<input name="company" required placeholder="Stripe" /></label>
+              <label>Role Title<input name="role" required placeholder="Software Engineer Intern" /></label>
+              <label>Location<input name="location" placeholder="San Francisco, CA" /></label>
+              <label>Job Posting Link<input name="link" type="url" placeholder="https://..." /></label>
+              <label>Deadline<input name="deadline" type="date" /></label>
+              <label>Hiring Manager (optional)<input name="manager" placeholder="Taylor Lee" /></label>
+            </div>
+            <label>Job Description<textarea name="description" rows="8" required placeholder="Paste job description..."></textarea></label>
+          </div>
+
+          <div class="step hidden" data-step="2">
+            <h3>Resume Input</h3>
+            <label>Paste your master resume<textarea name="resume" rows="10" required placeholder="Paste resume text..."></textarea></label>
+            <small>Tip: Keep content truthful. We only rephrase and prioritize existing experience.</small>
+          </div>
+
+          <div class="step hidden" data-step="3">
+            <h3>AI Analysis</h3>
+            <div id="analysis-result" class="analysis-grid"></div>
+          </div>
+
+          <div class="step hidden" data-step="4">
+            <h3>Generate Outputs</h3>
+            <label>Tailored Resume<textarea name="tailoredResume" rows="8"></textarea></label>
+            <label>Cover Letter<textarea name="coverLetter" rows="8"></textarea></label>
+            <label>Networking Message<textarea name="networkingMessage" rows="4"></textarea></label>
+            <label>Follow-up Message<textarea name="followUp" rows="3"></textarea></label>
+          </div>
+
+          <div class="step hidden" data-step="5">
+            <h3>Review & Save</h3>
+            <p>Everything is editable. Save when you're happy with the output.</p>
+            <label>Status
+              <select name="status">
+                <option>Draft</option>
+                <option>Ready to Apply</option>
+              </select>
+            </label>
+            <div class="inline-actions">
+              <button type="button" class="btn" id="copy-cover-letter">Copy Cover Letter</button>
+              <button type="button" class="btn" id="download-resume">Download Resume TXT</button>
+            </div>
+          </div>
+
+          <div class="form-footer">
+            <button type="button" class="btn" id="prev-step">Previous</button>
+            <button type="button" class="btn primary" id="next-step">Next</button>
+          </div>
+        </form>
+      </section>
+
+      <section id="resume-tailoring" class="view">
+        <h2>Resume Tailoring Studio</h2>
+        <div class="three-column mt-2">
+          <div class="card">
+            <h3>Job Description</h3>
+            <textarea id="rt-job" rows="15" placeholder="Paste job description"></textarea>
+          </div>
+          <div class="card">
+            <h3>Master Resume</h3>
+            <textarea id="rt-master" rows="15" placeholder="Paste master resume"></textarea>
+          </div>
+          <div class="card">
+            <h3>Tailored Resume</h3>
+            <textarea id="rt-tailored" rows="15" placeholder="Generated resume"></textarea>
+          </div>
+        </div>
+        <div class="inline-actions mt-2">
+          <button class="btn primary" id="generate-tailored">Generate</button>
+          <button class="btn" id="improve-tailored">Improve</button>
+          <button class="btn" id="copy-tailored">Copy</button>
+        </div>
+      </section>
+
+      <section id="cover-letter" class="view">
+        <h2>Cover Letter Generator</h2>
+        <div class="card mt-2">
+          <div class="form-grid">
+            <label>Company<input id="cl-company" placeholder="Notion" /></label>
+            <label>Role<input id="cl-role" placeholder="Backend Engineer Intern" /></label>
+            <label>Tone
+              <select id="cl-tone">
+                <option>Formal</option>
+                <option>Warm Professional</option>
+                <option>Concise</option>
+              </select>
+            </label>
+            <label>Length
+              <select id="cl-length">
+                <option>Short</option>
+                <option selected>Medium</option>
+                <option>Detailed</option>
+              </select>
+            </label>
+          </div>
+          <label>Key Experience<textarea id="cl-experience" rows="5" placeholder="Relevant projects and impact"></textarea></label>
+          <label>Generated Letter<textarea id="cl-output" rows="8" placeholder="Generated output"></textarea></label>
+          <div class="inline-actions">
+            <button class="btn primary" id="generate-cover-letter">Generate</button>
+            <button class="btn" id="copy-cover">Copy</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="networking" class="view">
+        <h2>Networking Assistant</h2>
+        <div class="card mt-2">
+          <div class="form-grid">
+            <label>Message Type
+              <select id="net-type">
+                <option>Recruiter outreach</option>
+                <option>Hiring manager outreach</option>
+                <option>LinkedIn connection request</option>
+                <option>Follow-up after applying</option>
+              </select>
+            </label>
+            <label>Recipient Name<input id="net-name" placeholder="Alex Morgan" /></label>
+            <label>Company<input id="net-company" placeholder="Datadog" /></label>
+            <label>Role<input id="net-role" placeholder="Software Engineer" /></label>
+          </div>
+          <label>Background summary<textarea id="net-background" rows="4"></textarea></label>
+          <label>Generated Message<textarea id="net-output" rows="6"></textarea></label>
+          <div class="inline-actions">
+            <button class="btn primary" id="generate-message">Generate Message</button>
+            <button class="btn" id="copy-message">Copy</button>
+          </div>
+          <p class="warning mt-1">Do not send spammy or transactional outreach. Keep it respectful and specific.</p>
+        </div>
+      </section>
+
+      <section id="tracker" class="view">
+        <div class="view-head">
+          <h2>Application Tracker</h2>
+          <input id="tracker-search" placeholder="Search company or role" />
+        </div>
+        <section class="card mt-2">
+          <table>
+            <thead>
+              <tr>
+                <th>Company</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Date Applied</th>
+                <th>Follow-up</th>
+                <th>Outcome</th>
+              </tr>
+            </thead>
+            <tbody id="tracker-body"></tbody>
+          </table>
+        </section>
+      </section>
+
+      <section id="documents" class="view">
+        <h2>Saved Documents</h2>
+        <div id="documents-grid" class="grid-3 mt-2"></div>
+      </section>
+
+      <section id="settings" class="view">
+        <h2>Profile & Settings</h2>
+        <form class="card mt-2" id="settings-form">
+          <div class="form-grid">
+            <label>Name<input value="Jordan Carter" /></label>
+            <label>Email<input value="jordan@example.com" /></label>
+            <label>Career Stage<input value="CS Student" /></label>
+            <label>Preferred Tone<input value="Warm Professional" /></label>
+            <label>LinkedIn URL<input value="https://linkedin.com/in/jordancarter" /></label>
+            <label>GitHub URL<input value="https://github.com/jordancarter" /></label>
+          </div>
+          <label>Personal Summary<textarea rows="5">Backend-focused student with hands-on experience in distributed systems and cloud deployments.</textarea></label>
+          <button class="btn primary" type="submit">Save Settings</button>
+        </form>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <p>CareerFlow AI · Built for students and early-career job seekers.</p>
+      </div>
+    </footer>
+
+    <div id="toast" class="toast hidden">Saved successfully.</div>
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
